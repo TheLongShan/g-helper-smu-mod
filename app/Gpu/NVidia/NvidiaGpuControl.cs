@@ -12,7 +12,7 @@ namespace GHelper.Gpu.NVidia;
 public class NvidiaGpuControl : IGpuControl
 {
 
-    public static int MaxCoreOffset = AppConfig.Get("max_gpu_core", 250);
+    public static int MaxCoreOffset = AppConfig.Get("max_gpu_core", 350);
     public static int MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 2000);
 
     public static int MinCoreOffset = AppConfig.Get("min_gpu_core", -250);
@@ -36,7 +36,7 @@ public class NvidiaGpuControl : IGpuControl
             }
             if (FullName.Contains("5070 Ti") || FullName.Contains("4080") || FullName.Contains("4090"))
             {
-                MaxCoreOffset = AppConfig.Get("max_gpu_core", 300);
+                MaxCoreOffset = AppConfig.Get("max_gpu_core", 350);
                 MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 2000);
                 Logger.WriteLine($"NVIDIA GPU: {FullName} ({MaxCoreOffset},{MaxMemoryOffset})");
             }

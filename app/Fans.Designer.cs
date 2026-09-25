@@ -1911,7 +1911,7 @@ namespace GHelper
             trackGPUCore.LargeChange = 100;
             trackGPUCore.Location = new Point(6, 48);
             trackGPUCore.Margin = new Padding(4, 2, 4, 2);
-            trackGPUCore.Maximum = 300;
+            trackGPUCore.Maximum = 350;
             trackGPUCore.Name = "trackGPUCore";
             trackGPUCore.RightToLeft = RightToLeft.No;
             trackGPUCore.Size = new Size(496, 90);
