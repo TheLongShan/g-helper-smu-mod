@@ -145,6 +145,40 @@ namespace PawnIO
         public bool CanSetTDP()   => _cpu is not CpuCodeName.Undefined;
         public bool CanSetCoAll() => _cpu is not CpuCodeName.Undefined;
         public bool CanSetThm()   => _cpu is not CpuCodeName.Undefined;
+        public bool CanSetFMax()  => _cpu is not CpuCodeName.Undefined &&
+                                     (Family is CpuFamily.Raphael or CpuFamily.Mobile or CpuFamily.ShimadaPeak);
+
+        public SmuStatus SetFMax(uint mhz)
+        {
+            uint v = mhz & 0xFFFFF;
+            return Family switch
+            {
+                // Dragon Range (Ryzen 9 7940HX/7945HX) / Raphael / GraniteRidge: RSMU/PSMU 0x70
+                CpuFamily.Raphael or CpuFamily.ShimadaPeak => SendPsmu(0x70, v),
+                // Phoenix / HawkPoint / Rembrandt: RSMU/PSMU 0x47
+                CpuFamily.Mobile                           => SendPsmu(0x47, v),
+                _                                          => SmuStatus.Failed,
+            };
+        }
+
+        public uint? GetFMax()
+        {
+            uint cmd = Family switch
+            {
+                CpuFamily.Raphael or CpuFamily.ShimadaPeak => 0x6E,
+                CpuFamily.Mobile                           => 0x42,
+                _                                          => 0,
+            };
+            if (cmd == 0) return null;
+            GetPsmuAddrs(out uint cmdAddr, out uint rspAddr, out uint argAddr);
+            if (cmdAddr == 0) return null;
+            if (MailboxRaw(cmdAddr, rspAddr, argAddr, cmd, new uint[] { 0 }, out var response) == SmuStatus.OK)
+            {
+                return response[0];
+            }
+            return null;
+        }
+
 
         public bool SetAllLimits(int stapmW, int fastW, int slowW)
             => SetStapm(stapmW) == SmuStatus.OK & SetFast(fastW) == SmuStatus.OK & SetSlow(slowW) == SmuStatus.OK;

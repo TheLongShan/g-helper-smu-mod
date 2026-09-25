@@ -359,6 +359,17 @@ public static class AppConfig
         Set(name + "_" + Modes.GetCurrent(), value);
     }
 
+    public static int GetModeFMax(int defaultValue = 5500)
+    {
+        return GetMode("cpu_fmax", defaultValue);
+    }
+
+    public static void SetModeFMax(int mhz)
+    {
+        SetMode("cpu_fmax", mhz);
+    }
+
+
     public static bool IsAlly()
     {
         return ContainsModel("RC7");

@@ -1,4 +1,4 @@
-﻿using GHelper.UI;
+using GHelper.UI;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -83,6 +83,10 @@ namespace GHelper
             labelUViGPU = new Label();
             labelLeftUViGPU = new Label();
             trackUViGPU = new RTrackBar();
+            panelFMax = new Panel();
+            labelFMax = new Label();
+            labelLeftFMax = new Label();
+            trackFMax = new RTrackBar();
             panelUV = new Panel();
             labelUV = new Label();
             labelLeftUV = new Label();
@@ -195,6 +199,8 @@ namespace GHelper
             panelAdvancedAlways.SuspendLayout();
             panelAdvancedApply.SuspendLayout();
             panelAdvancedReadLimits.SuspendLayout();
+            panelFMax.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackFMax).BeginInit();
             panelUViGPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackUViGPU).BeginInit();
             panelUV.SuspendLayout();
@@ -861,6 +867,56 @@ namespace GHelper
             trackUViGPU.TickFrequency = 5;
             trackUViGPU.TickStyle = TickStyle.TopLeft;
             // 
+            // panelFMax
+            // 
+            panelFMax.AutoSize = true;
+            panelFMax.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelFMax.Controls.Add(labelFMax);
+            panelFMax.Controls.Add(labelLeftFMax);
+            panelFMax.Controls.Add(trackFMax);
+            panelFMax.Dock = DockStyle.Top;
+            panelFMax.Location = new Point(0, 484);
+            panelFMax.Margin = new Padding(4);
+            panelFMax.MaximumSize = new Size(0, 124);
+            panelFMax.Name = "panelFMax";
+            panelFMax.Size = new Size(520, 124);
+            panelFMax.TabIndex = 5;
+            // 
+            // labelFMax
+            // 
+            labelFMax.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelFMax.Location = new Point(347, 9);
+            labelFMax.Margin = new Padding(4, 0, 4, 0);
+            labelFMax.Name = "labelFMax";
+            labelFMax.Size = new Size(148, 32);
+            labelFMax.TabIndex = 13;
+            labelFMax.Text = "5500 MHz";
+            labelFMax.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelLeftFMax
+            // 
+            labelLeftFMax.AutoSize = true;
+            labelLeftFMax.Location = new Point(10, 10);
+            labelLeftFMax.Margin = new Padding(4, 0, 4, 0);
+            labelLeftFMax.Name = "labelLeftFMax";
+            labelLeftFMax.Size = new Size(183, 32);
+            labelLeftFMax.TabIndex = 12;
+            labelLeftFMax.Text = "Max Frequency";
+            // 
+            // trackFMax
+            // 
+            trackFMax.Location = new Point(6, 48);
+            trackFMax.Margin = new Padding(4, 2, 4, 2);
+            trackFMax.Maximum = 5500;
+            trackFMax.Minimum = 2000;
+            trackFMax.Name = "trackFMax";
+            trackFMax.Size = new Size(508, 90);
+            trackFMax.TabIndex = 11;
+            trackFMax.SmallChange = 25;
+            trackFMax.LargeChange = 100;
+            trackFMax.TickFrequency = 100;
+            trackFMax.TickStyle = TickStyle.TopLeft;
+            // 
             // panelUV
             // 
             panelUV.AutoSize = true;
@@ -1034,6 +1090,7 @@ namespace GHelper
             panelPawnIO.Controls.Add(panelAdvancedAlways);
             panelPawnIO.Controls.Add(panelAdvancedApply);
             panelPawnIO.Controls.Add(labelRisky);
+            panelPawnIO.Controls.Add(panelFMax);
             panelPawnIO.Controls.Add(panelUViGPU);
             panelPawnIO.Controls.Add(panelUV);
             panelPawnIO.Controls.Add(panelTitleAdvanced);
@@ -2088,6 +2145,9 @@ namespace GHelper
             panelAdvancedAlways.ResumeLayout(false);
             panelAdvancedApply.ResumeLayout(false);
             panelAdvancedReadLimits.ResumeLayout(false);
+            panelFMax.ResumeLayout(false);
+            panelFMax.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackFMax).EndInit();
             panelUViGPU.ResumeLayout(false);
             panelUViGPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackUViGPU).EndInit();
@@ -2248,6 +2308,10 @@ namespace GHelper
         private Label labelUViGPU;
         private Label labelLeftUViGPU;
         private RTrackBar trackUViGPU;
+        private Panel panelFMax;
+        private Label labelFMax;
+        private Label labelLeftFMax;
+        private RTrackBar trackFMax;
         private Panel panelNav;
         private TableLayoutPanel tableNav;
         private RButton buttonCPU;

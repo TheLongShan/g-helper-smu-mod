@@ -1,4 +1,4 @@
-﻿using GHelper.Fan;
+using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.Mode;
@@ -274,6 +274,7 @@ namespace GHelper
             trackUV.Scroll += TrackUV_Scroll;
             trackUViGPU.Scroll += TrackUV_Scroll;
             trackTemp.Scroll += TrackUV_Scroll;
+            trackFMax.Scroll += TrackUV_Scroll;
 
             buttonApplyAdvanced.Click += ButtonApplyAdvanced_Click;
             buttonReadLimits.Click += ButtonReadLimits_Click;
@@ -308,6 +309,7 @@ namespace GHelper
             trackUV.AccessibleName = labelLeftUV.Text;
             trackUViGPU.AccessibleName = labelLeftUViGPU.Text;
             trackTemp.AccessibleName = labelLeftTemp.Text;
+            trackFMax.AccessibleName = labelLeftFMax.Text;
             trackGPUCore.AccessibleName = labelGPUCoreTitle.Text;
             trackGPUMemory.AccessibleName = labelGPUMemoryTitle.Text;
             trackGPUBoost.AccessibleName = labelGPUBoostTitle.Text;
@@ -464,11 +466,16 @@ namespace GHelper
             int temp = AppConfig.GetMode("cpu_temp");
             if (temp < CpuInfo.MinTemp || temp > CpuInfo.DefaultTemp) temp = CpuInfo.DefaultTemp;
 
+            int fmax = AppConfig.GetModeFMax();
+            if (fmax < trackFMax.Minimum || fmax > trackFMax.Maximum) fmax = trackFMax.Maximum;
+            else fmax = Math.Clamp((int)Math.Round((float)fmax / 25) * 25, trackFMax.Minimum, trackFMax.Maximum);
+
             checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsApplyUV();
 
             trackUV.Value = cpuUV;
             trackUViGPU.Value = igpuUV;
             trackTemp.Value = temp;
+            trackFMax.Value = fmax;
 
             VisualiseAdvanced();
 
@@ -490,10 +497,12 @@ namespace GHelper
                 labelRisky.Visible         = CpuInfo.IsSupportedUV();
                 panelUV.Visible            = CpuInfo.IsSupportedUV();
                 panelUViGPU.Visible        = CpuInfo.IsSupportedUViGPU();
+                panelFMax.Visible          = CpuInfo.IsAMD;
             }
 
             labelUV.Text     = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
+            labelFMax.Text   = (trackFMax.Value < trackFMax.Maximum) ? $"{trackFMax.Value} MHz" : $"{trackFMax.Value} MHz (Default)";
 
             labelTemp.Text = (trackTemp.Value < CpuInfo.DefaultTemp) ? TempHelper.FormatTemp(trackTemp.Value) : "Default";
         }
@@ -503,16 +512,23 @@ namespace GHelper
             AppConfig.SetMode("auto_uv", 0);
             checkApplyUV.Enabled = checkApplyUV.Checked = false;
 
+            trackFMax.Value = Math.Clamp((int)Math.Round((float)trackFMax.Value / 25) * 25, trackFMax.Minimum, trackFMax.Maximum);
+
             VisualiseAdvanced();
 
             AppConfig.SetMode("cpu_temp", trackTemp.Value);
             AppConfig.SetMode("cpu_uv", trackUV.Value);
             AppConfig.SetMode("igpu_uv", trackUViGPU.Value);
+            AppConfig.SetModeFMax(trackFMax.Value);
         }
 
 
         private void TrackUV_Scroll(object? sender, EventArgs e)
         {
+            if (sender == trackFMax)
+            {
+                trackFMax.Value = Math.Clamp((int)Math.Round((float)trackFMax.Value / 25) * 25, trackFMax.Minimum, trackFMax.Maximum);
+            }
             AdvancedScroll();
         }
 
@@ -1327,6 +1343,7 @@ namespace GHelper
             trackUV.Value = CpuInfo.MaxCPUUV;
             trackUViGPU.Value = CpuInfo.MaxIGPUUV;
             trackTemp.Value = CpuInfo.DefaultTemp;
+            trackFMax.Value = trackFMax.Maximum;
 
             trackCrossLoad.Value = AsusACPI.MaxCrossLoad;
             trackGPUtoCPU.Value = AsusACPI.MaxGPUtoCPU;
@@ -1335,6 +1352,7 @@ namespace GHelper
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");
+            AppConfig.RemoveMode("cpu_fmax");
 
             modeControl.ResetPerformanceMode();
 

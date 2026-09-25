@@ -21,7 +21,7 @@ namespace GHelper.Mode
         private static RyzenSmuService? _smu;
         private static readonly object _smuLock = new();
 
-        private static RyzenSmuService? GetSmu()
+        public static RyzenSmuService? GetSmu()
         {
             lock (_smuLock)
             {
@@ -572,6 +572,13 @@ namespace GHelper.Mode
 
                 SmuStatus? tempStatus = SetCPUTemp(cpuTemp, true);
                 if (tempStatus.HasValue) lines.AppendLine($"CPU Temp {cpuTemp}°C: {tempStatus}");
+
+                int fmax = AppConfig.GetModeFMax();
+                if (fmax >= 2000 && fmax <= 5500)
+                {
+                    SmuStatus s = RyzenControl.SetFMax((uint)fmax);
+                    lines.AppendLine($"CPU FMax {fmax} MHz: {s}");
+                }
             }
             catch (Exception ex)
             {
@@ -605,11 +612,22 @@ namespace GHelper.Mode
             }
         }
 
+        public static void ApplyFMax()
+        {
+            if (!CpuInfo.IsAMD) return;
+            int fmax = AppConfig.GetModeFMax();
+            if (fmax >= 2000 && fmax <= 5500)
+            {
+                RyzenControl.SetFMax((uint)fmax);
+            }
+        }
+
         public void ResetRyzen()
         {
             if (_cpuUV != 0) SetUV(0);
             if (_igpuUV != 0) SetUViGPU(0);
             if (_cpuTemp != CpuInfo.DefaultTemp) SetCPUTemp(CpuInfo.DefaultTemp, true);
+            ApplyFMax();
             SetReapplyEnabled(false);
         }
 
@@ -619,6 +637,8 @@ namespace GHelper.Mode
 
             if (AppConfig.IsApplyUV()) SetRyzen();
             else ResetRyzen();
+
+            ApplyFMax();
         }
 
         public void AutoCPUTemp()

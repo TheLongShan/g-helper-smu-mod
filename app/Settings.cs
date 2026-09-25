@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -759,6 +759,7 @@ namespace GHelper
                 Logger.WriteLine("System Resume");
                 GPUModeControl.suspended = false;
                 BatteryControl.AutoBattery();
+                Task.Delay(1000).ContinueWith(_ => ModeControl.ApplyFMax());
                 m.Result = (IntPtr)1;
             }
 
