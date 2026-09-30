@@ -77,6 +77,8 @@ namespace GHelper
             buttonToggleNVPCF.Text = Properties.Strings.ToggleNVPCF;
             checkAutoNVPCF.Text = Properties.Strings.AutoResetNVPCF;
             toolTip.SetToolTip(checkAutoNVPCF, Properties.Strings.AutoResetNVPCFTooltip);
+            toolTip.SetToolTip(buttonResetNVPCF, Properties.Strings.AutoResetNVPCFTooltip);
+            toolTip.SetToolTip(buttonToggleNVPCF, Properties.Strings.ToggleNVPCF);
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
@@ -416,6 +418,7 @@ namespace GHelper
                 case 1:
                     buttonGPU.Activated = true;
                     panelGPU.Visible = true;
+                    UpdateNVPCFStatus();
                     break;
                 case 2:
                     buttonAdvanced.Activated = true;
@@ -750,7 +753,8 @@ namespace GHelper
                 bool isSupported = NvpcfHelper.IsSupported();
                 try
                 {
-                    Invoke(delegate
+                    if (IsDisposed) return;
+                    BeginInvoke((MethodInvoker)delegate
                     {
                         panelNVPCF.Visible = isSupported;
                         if (!isSupported) return;
@@ -767,6 +771,7 @@ namespace GHelper
                             buttonToggleNVPCF.Enabled = false;
                             buttonResetNVPCF.Text = Properties.Strings.ResettingNVPCF;
                             labelNVPCFStatus.Text = Properties.Strings.ResettingNVPCF;
+                            labelNVPCFStatus.ForeColor = Color.Orange;
 
                             await NvpcfHelper.ResetCycleAsync(1000, force: true);
 
@@ -798,14 +803,13 @@ namespace GHelper
 
         private void UpdateNVPCFStatus()
         {
-            if (!panelNVPCF.Visible) return;
             Task.Run(() =>
             {
                 bool? enabled = NvpcfHelper.IsEnabled();
                 try
                 {
-                    if (IsDisposed || !IsHandleCreated) return;
-                    Invoke(delegate
+                    if (IsDisposed) return;
+                    BeginInvoke((MethodInvoker)delegate
                     {
                         if (enabled == true)
                         {
@@ -819,8 +823,8 @@ namespace GHelper
                         }
                         else
                         {
-                            labelNVPCFStatus.Text = "Status: Unknown";
-                            labelNVPCFStatus.ForeColor = Color.Gray;
+                            labelNVPCFStatus.Text = Properties.Strings.NVPCFStatusDisabled;
+                            labelNVPCFStatus.ForeColor = colorTurbo;
                         }
                     });
                 }

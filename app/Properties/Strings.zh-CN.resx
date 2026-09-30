@@ -1116,27 +1116,27 @@
     <value>背景</value>
   </data>
   <data name="NVPCFControl" xml:space="preserve">
-    <value>Dynamic Boost 控制 (NVPCF)</value>
+    <value>Dynamic Boost (NVPCF)</value>
   </data>
   <data name="ResetNVPCF" xml:space="preserve">
-    <value>重置 NVPCF (解除 DB 锁)</value>
+    <value>重置解锁</value>
   </data>
   <data name="ResettingNVPCF" xml:space="preserve">
     <value>重置中...</value>
   </data>
   <data name="ToggleNVPCF" xml:space="preserve">
-    <value>切换启用/禁用</value>
+    <value>切换开关</value>
   </data>
   <data name="AutoResetNVPCF" xml:space="preserve">
-    <value>开机及唤醒时自动重置 NVPCF (解除 DB 锁)</value>
+    <value>开机及唤醒时自动重置 (解锁 DB)</value>
   </data>
   <data name="AutoResetNVPCFTooltip" xml:space="preserve">
     <value>开机或唤醒后自动启用并禁用 NVPCF 设备，彻底解除 Dynamic Boost 功率限制</value>
   </data>
   <data name="NVPCFStatusStarted" xml:space="preserve">
-    <value>状态: 运行中 (DB 锁定中)</value>
+    <value>运行中 (已锁定)</value>
   </data>
   <data name="NVPCFStatusDisabled" xml:space="preserve">
-    <value>状态: 已禁用 (DB 锁已解除)</value>
+    <value>已禁用 (已解锁)</value>
   </data>
 </root>

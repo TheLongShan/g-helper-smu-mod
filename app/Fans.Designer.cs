@@ -149,8 +149,10 @@ namespace GHelper
             labelPowerModeTitle = new Label();
             panelGPU = new Panel();
             panelNVPCF = new Panel();
+            panelNVPCFHeader = new Panel();
             labelNVPCFTitle = new Label();
             labelNVPCFStatus = new Label();
+            tableNVPCFButtons = new TableLayoutPanel();
             buttonResetNVPCF = new RButton();
             buttonToggleNVPCF = new RButton();
             checkAutoNVPCF = new RCheckBox();
@@ -245,6 +247,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)picturePowerMode).BeginInit();
             panelGPU.SuspendLayout();
             panelNVPCF.SuspendLayout();
+            panelNVPCFHeader.SuspendLayout();
+            tableNVPCFButtons.SuspendLayout();
             panelGPUTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
             panelGPUBoost.SuspendLayout();
@@ -1694,40 +1698,71 @@ namespace GHelper
             // panelNVPCF
             // 
             panelNVPCF.AutoSize = true;
+            panelNVPCF.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelNVPCF.Controls.Add(checkAutoNVPCF);
-            panelNVPCF.Controls.Add(buttonToggleNVPCF);
-            panelNVPCF.Controls.Add(buttonResetNVPCF);
-            panelNVPCF.Controls.Add(labelNVPCFStatus);
-            panelNVPCF.Controls.Add(labelNVPCFTitle);
+            panelNVPCF.Controls.Add(tableNVPCFButtons);
+            panelNVPCF.Controls.Add(panelNVPCFHeader);
             panelNVPCF.Dock = DockStyle.Top;
             panelNVPCF.Location = new Point(0, 804);
-            panelNVPCF.Margin = new Padding(4);
+            panelNVPCF.Margin = new Padding(0);
             panelNVPCF.Name = "panelNVPCF";
-            panelNVPCF.Padding = new Padding(0, 8, 0, 10);
+            panelNVPCF.Padding = new Padding(0, 4, 0, 8);
             panelNVPCF.Size = new Size(520, 130);
             panelNVPCF.TabIndex = 7;
+            // 
+            // panelNVPCFHeader
+            // 
+            panelNVPCFHeader.AutoSize = true;
+            panelNVPCFHeader.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelNVPCFHeader.Controls.Add(labelNVPCFStatus);
+            panelNVPCFHeader.Controls.Add(labelNVPCFTitle);
+            panelNVPCFHeader.Dock = DockStyle.Top;
+            panelNVPCFHeader.Location = new Point(0, 0);
+            panelNVPCFHeader.Margin = new Padding(0);
+            panelNVPCFHeader.Name = "panelNVPCFHeader";
+            panelNVPCFHeader.Padding = new Padding(8, 8, 8, 4);
+            panelNVPCFHeader.Size = new Size(520, 36);
+            panelNVPCFHeader.TabIndex = 0;
             // 
             // labelNVPCFTitle
             // 
             labelNVPCFTitle.AutoSize = true;
+            labelNVPCFTitle.Dock = DockStyle.Left;
             labelNVPCFTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelNVPCFTitle.Location = new Point(10, 10);
-            labelNVPCFTitle.Margin = new Padding(4, 0, 4, 0);
+            labelNVPCFTitle.Location = new Point(8, 8);
             labelNVPCFTitle.Name = "labelNVPCFTitle";
-            labelNVPCFTitle.Size = new Size(240, 25);
+            labelNVPCFTitle.Size = new Size(200, 24);
             labelNVPCFTitle.TabIndex = 0;
             labelNVPCFTitle.Text = "Dynamic Boost (NVPCF)";
             // 
             // labelNVPCFStatus
             // 
-            labelNVPCFStatus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelNVPCFStatus.Location = new Point(255, 10);
-            labelNVPCFStatus.Margin = new Padding(4, 0, 4, 0);
+            labelNVPCFStatus.AutoSize = true;
+            labelNVPCFStatus.Dock = DockStyle.Right;
+            labelNVPCFStatus.Font = new Font("Segoe UI", 9F);
+            labelNVPCFStatus.Location = new Point(360, 8);
             labelNVPCFStatus.Name = "labelNVPCFStatus";
-            labelNVPCFStatus.Size = new Size(255, 25);
+            labelNVPCFStatus.Size = new Size(152, 24);
             labelNVPCFStatus.TabIndex = 1;
-            labelNVPCFStatus.Text = "Status: ...";
+            labelNVPCFStatus.Text = "...";
             labelNVPCFStatus.TextAlign = ContentAlignment.TopRight;
+            // 
+            // tableNVPCFButtons
+            // 
+            tableNVPCFButtons.ColumnCount = 2;
+            tableNVPCFButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableNVPCFButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableNVPCFButtons.Controls.Add(buttonResetNVPCF, 0, 0);
+            tableNVPCFButtons.Controls.Add(buttonToggleNVPCF, 1, 0);
+            tableNVPCFButtons.Dock = DockStyle.Top;
+            tableNVPCFButtons.Location = new Point(0, 36);
+            tableNVPCFButtons.Margin = new Padding(0);
+            tableNVPCFButtons.Name = "tableNVPCFButtons";
+            tableNVPCFButtons.Padding = new Padding(6, 2, 6, 2);
+            tableNVPCFButtons.RowCount = 1;
+            tableNVPCFButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableNVPCFButtons.Size = new Size(520, 46);
+            tableNVPCFButtons.TabIndex = 1;
             // 
             // buttonResetNVPCF
             // 
@@ -1735,14 +1770,15 @@ namespace GHelper
             buttonResetNVPCF.BackColor = SystemColors.ControlLight;
             buttonResetNVPCF.BorderColor = Color.Transparent;
             buttonResetNVPCF.BorderRadius = 2;
+            buttonResetNVPCF.Dock = DockStyle.Fill;
             buttonResetNVPCF.FlatStyle = FlatStyle.Flat;
-            buttonResetNVPCF.Location = new Point(10, 40);
-            buttonResetNVPCF.Margin = new Padding(4, 2, 4, 2);
+            buttonResetNVPCF.Location = new Point(8, 4);
+            buttonResetNVPCF.Margin = new Padding(2, 2, 4, 2);
             buttonResetNVPCF.Name = "buttonResetNVPCF";
             buttonResetNVPCF.Secondary = true;
-            buttonResetNVPCF.Size = new Size(240, 36);
-            buttonResetNVPCF.TabIndex = 2;
-            buttonResetNVPCF.Text = "Reset NVPCF (Unlock DB)";
+            buttonResetNVPCF.Size = new Size(244, 38);
+            buttonResetNVPCF.TabIndex = 0;
+            buttonResetNVPCF.Text = "Reset Unlock";
             buttonResetNVPCF.UseVisualStyleBackColor = false;
             // 
             // buttonToggleNVPCF
@@ -1751,24 +1787,27 @@ namespace GHelper
             buttonToggleNVPCF.BackColor = SystemColors.ControlLight;
             buttonToggleNVPCF.BorderColor = Color.Transparent;
             buttonToggleNVPCF.BorderRadius = 2;
+            buttonToggleNVPCF.Dock = DockStyle.Fill;
             buttonToggleNVPCF.FlatStyle = FlatStyle.Flat;
-            buttonToggleNVPCF.Location = new Point(260, 40);
-            buttonToggleNVPCF.Margin = new Padding(4, 2, 4, 2);
+            buttonToggleNVPCF.Location = new Point(260, 4);
+            buttonToggleNVPCF.Margin = new Padding(4, 2, 2, 2);
             buttonToggleNVPCF.Name = "buttonToggleNVPCF";
             buttonToggleNVPCF.Secondary = true;
-            buttonToggleNVPCF.Size = new Size(245, 36);
-            buttonToggleNVPCF.TabIndex = 3;
-            buttonToggleNVPCF.Text = "Toggle NVPCF";
+            buttonToggleNVPCF.Size = new Size(244, 38);
+            buttonToggleNVPCF.TabIndex = 1;
+            buttonToggleNVPCF.Text = "Toggle";
             buttonToggleNVPCF.UseVisualStyleBackColor = false;
             // 
             // checkAutoNVPCF
             // 
             checkAutoNVPCF.AutoSize = true;
-            checkAutoNVPCF.Location = new Point(12, 85);
-            checkAutoNVPCF.Margin = new Padding(4);
+            checkAutoNVPCF.Dock = DockStyle.Top;
+            checkAutoNVPCF.Location = new Point(0, 82);
+            checkAutoNVPCF.Margin = new Padding(0);
             checkAutoNVPCF.Name = "checkAutoNVPCF";
-            checkAutoNVPCF.Size = new Size(490, 29);
-            checkAutoNVPCF.TabIndex = 4;
+            checkAutoNVPCF.Padding = new Padding(8, 4, 8, 4);
+            checkAutoNVPCF.Size = new Size(520, 32);
+            checkAutoNVPCF.TabIndex = 2;
             checkAutoNVPCF.Text = "Auto reset on startup / resume";
             checkAutoNVPCF.UseVisualStyleBackColor = true;
             // 
@@ -2295,6 +2334,9 @@ namespace GHelper
             panelGPU.PerformLayout();
             panelNVPCF.ResumeLayout(false);
             panelNVPCF.PerformLayout();
+            panelNVPCFHeader.ResumeLayout(false);
+            panelNVPCFHeader.PerformLayout();
+            tableNVPCFButtons.ResumeLayout(false);
             panelGPUTemp.ResumeLayout(false);
             panelGPUTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).EndInit();
@@ -2464,8 +2506,10 @@ namespace GHelper
         private Label labelHysteresisUpValue;
         private Label labelHysteresisDownValue;
         private Panel panelNVPCF;
+        private Panel panelNVPCFHeader;
         private Label labelNVPCFTitle;
         private Label labelNVPCFStatus;
+        private TableLayoutPanel tableNVPCFButtons;
         private RButton buttonResetNVPCF;
         private RButton buttonToggleNVPCF;
         private RCheckBox checkAutoNVPCF;
