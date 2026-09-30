@@ -1115,4 +1115,28 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Background" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="NVPCFControl" xml:space="preserve">
+    <value>Dynamic Boost Control (NVPCF)</value>
+  </data>
+  <data name="ResetNVPCF" xml:space="preserve">
+    <value>Reset NVPCF (Unlock DB)</value>
+  </data>
+  <data name="ResettingNVPCF" xml:space="preserve">
+    <value>Resetting...</value>
+  </data>
+  <data name="ToggleNVPCF" xml:space="preserve">
+    <value>Toggle NVPCF</value>
+  </data>
+  <data name="AutoResetNVPCF" xml:space="preserve">
+    <value>Auto reset NVPCF on startup / resume (Unlock DB)</value>
+  </data>
+  <data name="AutoResetNVPCFTooltip" xml:space="preserve">
+    <value>Enables and disables NVPCF on startup/resume to remove Dynamic Boost power limits</value>
+  </data>
+  <data name="NVPCFStatusStarted" xml:space="preserve">
+    <value>Status: Started (DB Locked)</value>
+  </data>
+  <data name="NVPCFStatusDisabled" xml:space="preserve">
+    <value>Status: Disabled (DB Unlocked)</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-﻿using GHelper.Display;
+using GHelper.Display;
 using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
@@ -176,6 +176,7 @@ namespace GHelper
             checkAspm.Text = Properties.Strings.DisablePCIeASPM;
             checkStandbyNetworking.Text = Properties.Strings.DisableStandbyNetworking;
             checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
+            checkAutoNVPCF.Text = Properties.Strings.AutoResetNVPCF;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
             numericHibernateAfter.OffText = Properties.Strings.Off;
             numericBacklightTime.OffText = Properties.Strings.Off;
@@ -481,6 +482,10 @@ namespace GHelper
             checkNVPlatform.Checked = AppConfig.IsNVPlatform();
             checkNVPlatform.CheckedChanged += CheckNVPlatform_CheckedChanged;
 
+            checkAutoNVPCF.Visible = Program.acpi.IsNVidiaGPU() && NvpcfHelper.IsSupported();
+            checkAutoNVPCF.Checked = AppConfig.IsAutoNvpcfReset();
+            checkAutoNVPCF.CheckedChanged += CheckAutoNVPCF_CheckedChanged;
+
             checkAspm.Checked = AppConfig.IsAutoASPM();
             checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
 
@@ -493,6 +498,7 @@ namespace GHelper
 
             toolTip.SetToolTip(checkAutoToggleClamshellMode, Properties.Strings.ClamshellModeTooltip);
             toolTip.SetToolTip(checkNVPlatform, Properties.Strings.NVPlatformTooltip);
+            toolTip.SetToolTip(checkAutoNVPCF, Properties.Strings.AutoResetNVPCFTooltip);
             toolTip.SetToolTip(checkAspm, Properties.Strings.DisablePCIeASPMTooltip);
             toolTip.SetToolTip(checkStandbyNetworking, Properties.Strings.DisableStandbyNetworkingTooltip);
 
@@ -525,6 +531,11 @@ namespace GHelper
         private void CheckNVPlatform_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("nv_platform", (checkNVPlatform.Checked ? 1 : 0));
+        }
+
+        private void CheckAutoNVPCF_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("auto_nvpcf_reset", (checkAutoNVPCF.Checked ? 1 : 0));
         }
 
         private void OptimalBrightness_Changed(object? sender, EventArgs e)

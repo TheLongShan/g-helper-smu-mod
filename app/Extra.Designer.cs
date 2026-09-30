@@ -1,4 +1,4 @@
-﻿using GHelper.Properties;
+using GHelper.Properties;
 using GHelper.UI;
 
 namespace GHelper
@@ -120,6 +120,7 @@ namespace GHelper
             checkUSBC = new CheckBox();
             checkGpuApps = new CheckBox();
             checkNVPlatform = new CheckBox();
+            checkAutoNVPCF = new CheckBox();
             checkStatusLed = new CheckBox();
             checkNumberPad = new CheckBox();
             checkAspm = new CheckBox();
@@ -1211,6 +1212,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkNVPlatform);
+            panelSettings.Controls.Add(checkAutoNVPCF);
             panelSettings.Controls.Add(checkNumberPad);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkStandbyNetworking);
@@ -1338,6 +1340,19 @@ namespace GHelper
             checkNVPlatform.TabIndex = 2;
             checkNVPlatform.Text = "Stop/Start NVIDIA services based on dGPU state";
             checkNVPlatform.UseVisualStyleBackColor = true;
+            // 
+            // checkAutoNVPCF
+            // 
+            checkAutoNVPCF.AutoSize = true;
+            checkAutoNVPCF.Dock = DockStyle.Top;
+            checkAutoNVPCF.Location = new Point(21, 131);
+            checkAutoNVPCF.Margin = new Padding(5, 3, 5, 3);
+            checkAutoNVPCF.Name = "checkAutoNVPCF";
+            checkAutoNVPCF.Padding = new Padding(3);
+            checkAutoNVPCF.Size = new Size(917, 42);
+            checkAutoNVPCF.TabIndex = 2;
+            checkAutoNVPCF.Text = "Auto reset NVPCF on startup / resume";
+            checkAutoNVPCF.UseVisualStyleBackColor = true;
             // 
             // checkStatusLed
             // 
@@ -1890,6 +1905,7 @@ namespace GHelper
         private CheckBox checkBatteryLid;
         private CheckBox checkBatteryBar;
         private CheckBox checkNVPlatform;
+        private CheckBox checkAutoNVPCF;
         private Panel panelOptimalBrightness;
         private RComboBox comboOptimalBrightness;
         private PictureBox pictureOptimalBrightness;

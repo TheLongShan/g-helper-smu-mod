@@ -221,6 +221,15 @@ namespace GHelper
             if (AppConfig.IsOverlay())
                 hardwareOverlay?.StartOverlay();
 
+            if (AppConfig.IsAutoNvpcfReset())
+            {
+                Task.Run(async () =>
+                {
+                    await Task.Delay(3500);
+                    await NvpcfHelper.ResetCycleAsync();
+                });
+            }
+
             Application.ApplicationExit += OnExit;
             Application.Run();
         }
@@ -251,6 +260,15 @@ namespace GHelper
                     if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
                     modeControl.AutoCPUTemp();
                 });
+
+                if (AppConfig.IsAutoNvpcfReset())
+                {
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(3500);
+                        await NvpcfHelper.ResetCycleAsync();
+                    });
+                }
             }
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
@@ -401,6 +419,19 @@ namespace GHelper
                 InputDispatcher.ShutdownStatusLed();
                 XGM.NotifyShutdown();
                 return;
+            }
+
+            if (e.Mode == PowerModes.Resume)
+            {
+                Logger.WriteLine("Power Mode Changed: Resume");
+                if (AppConfig.IsAutoNvpcfReset())
+                {
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(3500);
+                        await NvpcfHelper.ResetCycleAsync();
+                    });
+                }
             }
 
             PowerLineStatus status = SystemInformation.PowerStatus.PowerLineStatus;

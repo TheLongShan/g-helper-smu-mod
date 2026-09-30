@@ -695,6 +695,11 @@ public static class AppConfig
         return Is("nv_platform");
     }
 
+    public static bool IsAutoNvpcfReset()
+    {
+        return Is("auto_nvpcf_reset");
+    }
+
     public static bool IsForceSetGPUMode()
     {
         return Is("gpu_mode_force_set") || (ContainsModel("503") && IsNotFalse("gpu_mode_force_set"));

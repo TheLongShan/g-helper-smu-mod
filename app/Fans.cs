@@ -42,6 +42,8 @@ namespace GHelper
         static bool isGPUPower => gpuPowerBase > 0;
         static bool clampFanDots = AppConfig.IsClampFanDots();
 
+        ToolTip toolTip = new ToolTip();
+
         public Fans()
         {
 
@@ -69,6 +71,12 @@ namespace GHelper
             labelGPUBoostTitle.Text = Properties.Strings.GPUBoost;
             labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
             labelGPUPowerTitle.Text = Properties.Strings.GPUPower;
+
+            labelNVPCFTitle.Text = Properties.Strings.NVPCFControl;
+            buttonResetNVPCF.Text = Properties.Strings.ResetNVPCF;
+            buttonToggleNVPCF.Text = Properties.Strings.ToggleNVPCF;
+            checkAutoNVPCF.Text = Properties.Strings.AutoResetNVPCF;
+            toolTip.SetToolTip(checkAutoNVPCF, Properties.Strings.AutoResetNVPCFTooltip);
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
@@ -236,6 +244,8 @@ namespace GHelper
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelFansResult.Visible = false;
+
+            InitNVPCF();
 
 
             trackUV.Minimum = CpuInfo.MinCPUUV;
@@ -722,6 +732,7 @@ namespace GHelper
                         VisualiseGPUSettings();
 
                         InitGPUPower();
+                        UpdateNVPCFStatus();
                     });
                 }
                 catch (Exception ex)
@@ -729,6 +740,91 @@ namespace GHelper
                     Logger.WriteLine(ex.ToString());
                     try { Invoke(delegate { gpuVisible = buttonGPU.Visible = false; }); } catch { }
                 }
+            });
+        }
+
+        private void InitNVPCF()
+        {
+            Task.Run(() =>
+            {
+                bool isSupported = NvpcfHelper.IsSupported();
+                try
+                {
+                    Invoke(delegate
+                    {
+                        panelNVPCF.Visible = isSupported;
+                        if (!isSupported) return;
+
+                        checkAutoNVPCF.Checked = AppConfig.IsAutoNvpcfReset();
+                        checkAutoNVPCF.Click += (s, e) =>
+                        {
+                            AppConfig.Set("auto_nvpcf_reset", checkAutoNVPCF.Checked ? 1 : 0);
+                        };
+
+                        buttonResetNVPCF.Click += async (s, e) =>
+                        {
+                            buttonResetNVPCF.Enabled = false;
+                            buttonToggleNVPCF.Enabled = false;
+                            buttonResetNVPCF.Text = Properties.Strings.ResettingNVPCF;
+                            labelNVPCFStatus.Text = Properties.Strings.ResettingNVPCF;
+
+                            await NvpcfHelper.ResetCycleAsync(1000, force: true);
+
+                            buttonResetNVPCF.Text = Properties.Strings.ResetNVPCF;
+                            buttonResetNVPCF.Enabled = true;
+                            buttonToggleNVPCF.Enabled = true;
+                            UpdateNVPCFStatus();
+                        };
+
+                        buttonToggleNVPCF.Click += async (s, e) =>
+                        {
+                            buttonResetNVPCF.Enabled = false;
+                            buttonToggleNVPCF.Enabled = false;
+                            labelNVPCFStatus.Text = "...";
+
+                            await Task.Run(() => NvpcfHelper.Toggle());
+
+                            buttonResetNVPCF.Enabled = true;
+                            buttonToggleNVPCF.Enabled = true;
+                            UpdateNVPCFStatus();
+                        };
+
+                        UpdateNVPCFStatus();
+                    });
+                }
+                catch { }
+            });
+        }
+
+        private void UpdateNVPCFStatus()
+        {
+            if (!panelNVPCF.Visible) return;
+            Task.Run(() =>
+            {
+                bool? enabled = NvpcfHelper.IsEnabled();
+                try
+                {
+                    if (IsDisposed || !IsHandleCreated) return;
+                    Invoke(delegate
+                    {
+                        if (enabled == true)
+                        {
+                            labelNVPCFStatus.Text = Properties.Strings.NVPCFStatusStarted;
+                            labelNVPCFStatus.ForeColor = Color.Orange;
+                        }
+                        else if (enabled == false)
+                        {
+                            labelNVPCFStatus.Text = Properties.Strings.NVPCFStatusDisabled;
+                            labelNVPCFStatus.ForeColor = colorTurbo;
+                        }
+                        else
+                        {
+                            labelNVPCFStatus.Text = "Status: Unknown";
+                            labelNVPCFStatus.ForeColor = Color.Gray;
+                        }
+                    });
+                }
+                catch { }
             });
         }
 
